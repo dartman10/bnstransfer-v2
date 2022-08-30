@@ -108,18 +108,22 @@ const ContractCallBnsTransfer = () => {
         </p>
       </BnsContext.Provider>
 
-      <p>Enter account address of new owner:</p>
-      <input
-        className="form-input"
-        type="text"
-        size="60"
-        onChange={(e) => setStxAddress(e.target.value)}
-      />
-      <p>
-        <button className="Connect" onClick={() => transferBnsName()}>
-          Transfer Name
-        </button>
-      </p>
+      {bnsNamespaceContext && <p>Enter account address of new owner:</p>}
+      {bnsNamespaceContext && (
+        <input
+          className="form-input"
+          type="text"
+          size="60"
+          onChange={(e) => setStxAddress(e.target.value)}
+        />
+      )}
+      {bnsNamespaceContext && (
+        <p>
+          <button className="Connect" onClick={() => transferBnsName()}>
+            Transfer Name
+          </button>
+        </p>
+      )}
     </div>
   );
 };
