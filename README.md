@@ -4,4 +4,6 @@
 
 ### Reach us @ Discord : dartman#1304
 
-### BNS Search : https://www.bnssearch.com
+### Other sites:
+
+BNS Search : https://www.bnssearch.com
