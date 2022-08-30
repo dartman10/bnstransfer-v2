@@ -16,7 +16,7 @@ root.render(
     <Connect
       authOptions={{
         appDetails: {
-          name: 'Stacks React Template',
+          name: 'https://www.bnstransfer.com',
           // todo:
           icon: window.location.origin + '/logo.png',
         },

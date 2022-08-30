@@ -12,8 +12,10 @@ import {
   createAssetInfo,
   tupleCV,
   someCV,
+  validateStacksAddress,
 } from '@stacks/transactions';
 import { userSession } from './ConnectWallet';
+
 import ContractCallBnsResolvePrincipal, {
   BnsContext,
 } from './ContractCallBnsResolvePrincipal';
@@ -29,7 +31,10 @@ const ContractCallBnsTransfer = () => {
   const [bnsNamespaceContext, setBnsNamespaceContext] = useState();
 
   function transferBnsName() {
-    // To Do : before proceeding, check valid stxAddress, bns name and namespace. then display UI error message.
+    if (!validateStacksAddress(stxAddress)) {
+      console.log('Please enter a valid STX address'); //to-do : write a message on UI
+      return;
+    }
 
     const bnsContractAddress = 'SP000000000000000000002Q6VF78';
     const bnsContractName = 'bns';
@@ -82,7 +87,7 @@ const ContractCallBnsTransfer = () => {
         // need to do more fancy stuff here, like a pending txn spinning wheel
       },
       onCancel: () => {
-        console.log('onCancel:', 'Transaction was canceled');
+        console.log('onCancel:', 'Transaction was canceled'); //need to write a message on UI
       },
     });
   }
