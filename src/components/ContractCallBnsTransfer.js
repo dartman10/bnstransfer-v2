@@ -25,14 +25,19 @@ const ContractCallBnsTransfer = () => {
 
   // useState
   const [stxAddress, setStxAddress] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
+  const [friendlyMessage, setFriendlyMessage] = useState('');
 
-  // state for Resolve Principal context
+  // state for context Resolve Principal
   const [bnsNameContext, setBnsNameContext] = useState();
   const [bnsNamespaceContext, setBnsNamespaceContext] = useState();
 
   function transferBnsName() {
+    setErrorMessage(''); //reinitialize error message
+    setFriendlyMessage(''); //reinitialize friendly message
+
     if (!validateStacksAddress(stxAddress)) {
-      console.log('Please enter a valid STX address'); //to-do : write a message on UI
+      setErrorMessage('New owner address invalid, please try again.');
       return;
     }
 
@@ -78,16 +83,16 @@ const ContractCallBnsTransfer = () => {
       postConditions: [bnsTransferPostCondition],
 
       onFinish: (data) => {
+        setFriendlyMessage('Transaction submitted.');
         window //opens a new window, show transaction in Stacks Explorer
           .open(
             `https://explorer.stacks.co/txid/${data.txId}?chain=mainnet`,
             '_blank'
           )
           .focus();
-        // need to do more fancy stuff here, like a pending txn spinning wheel
       },
       onCancel: () => {
-        console.log('onCancel:', 'Transaction was canceled'); //need to write a message on UI
+        setFriendlyMessage('Transfer cancelled.');
       },
     });
   }
@@ -118,13 +123,19 @@ const ContractCallBnsTransfer = () => {
             className="form-input"
             type="text"
             size="60"
-            onChange={(e) => setStxAddress(e.target.value)}
+            onChange={(e) => (
+              setStxAddress(e.target.value),
+              setErrorMessage(''),
+              setFriendlyMessage('')
+            )}
           />
           <p>
             <button className="Connect" onClick={() => transferBnsName()}>
               Transfer Name
             </button>
           </p>
+          <div className="error-message">{errorMessage}</div>
+          <div className="friendly-message">{friendlyMessage}</div>
         </div>
       )}
     </div>
