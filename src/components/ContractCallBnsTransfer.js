@@ -33,8 +33,7 @@ const ContractCallBnsTransfer = () => {
   const [bnsNamespaceContext, setBnsNamespaceContext] = useState();
 
   function transferBnsName() {
-    setErrorMessage(''); //reinitialize error message
-    setFriendlyMessage(''); //reinitialize friendly message
+    resetMessages();
 
     if (!validateStacksAddress(stxAddress)) {
       setErrorMessage('New owner address invalid, please try again.');
@@ -97,6 +96,16 @@ const ContractCallBnsTransfer = () => {
     });
   }
 
+  function onChangeSetter(address) {
+    setStxAddress(address);
+    resetMessages();
+  }
+
+  function resetMessages() {
+    setErrorMessage('');
+    setFriendlyMessage('');
+  }
+
   if (!userSession.isUserSignedIn()) {
     return; // return an empty component if user has not signed-in yet.
   }
@@ -123,11 +132,7 @@ const ContractCallBnsTransfer = () => {
             className="form-input"
             type="text"
             size="60"
-            onChange={(e) => (
-              setStxAddress(e.target.value),
-              setErrorMessage(''),
-              setFriendlyMessage('')
-            )}
+            onChange={(e) => onChangeSetter(e.target.value)}
           />
           <p>
             <button className="Connect" onClick={() => transferBnsName()}>
