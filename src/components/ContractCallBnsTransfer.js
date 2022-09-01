@@ -1,6 +1,5 @@
 import { useConnect } from '@stacks/connect-react';
 import { useState } from 'react';
-import { hexToBytes } from '@stacks/common';
 import { StacksMainnet } from '@stacks/network';
 import {} from '@stacks/bns';
 import {
