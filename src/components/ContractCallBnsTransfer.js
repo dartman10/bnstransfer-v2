@@ -1,5 +1,6 @@
 import { useConnect } from '@stacks/connect-react';
 import { useState } from 'react';
+import { hexToBytes } from '@stacks/common';
 import { StacksMainnet } from '@stacks/network';
 import {} from '@stacks/bns';
 import {
@@ -13,6 +14,8 @@ import {
   tupleCV,
   someCV,
   validateStacksAddress,
+  callReadOnlyFunction,
+  cvToValue,
 } from '@stacks/transactions';
 import { userSession } from './ConnectWallet';
 
@@ -28,18 +31,62 @@ const ContractCallBnsTransfer = () => {
   const [errorMessage, setErrorMessage] = useState('');
   const [friendlyMessage, setFriendlyMessage] = useState('');
 
-  // state for context Resolve Principal
+  // useState for context Resolve Principal
   const [bnsNameContext, setBnsNameContext] = useState();
   const [bnsNamespaceContext, setBnsNamespaceContext] = useState();
 
-  function transferBnsName() {
+  function onClickAttemptTransfer() {
     resetMessages();
 
     if (!validateStacksAddress(stxAddress)) {
-      setErrorMessage('New owner address invalid, please try again.');
+      setErrorMessage('Try again, address not valid.');
       return;
     }
 
+    preTransferBnsName();
+  }
+
+  // refactor this function. this is same function as in contractcallbnsresolveprincipal component. need to put them together somehow.
+  function preTransferBnsName() {
+    const contractAddress = 'SP000000000000000000002Q6VF78';
+    const contractName = 'bns';
+    const functionName = 'resolve-principal';
+    const functionArgs = standardPrincipalCV(stxAddress); //check if new account address already has a BNS
+    const network = new StacksMainnet();
+    const senderAddress = userSession.loadUserData().profile.stxAddress.mainnet;
+    const options = {
+      contractAddress,
+      contractName,
+      functionName,
+      functionArgs: [functionArgs],
+      network,
+      senderAddress,
+    };
+
+    const result = callReadOnlyFunction(options); //result is a promise
+    result.then((result) => {
+      if (cvToValue(result.value).name.value != null) {
+        setErrorMessage(
+          'Try again, acct owns ' +
+            hexify(cvToValue(result.value).name.value) +
+            '.' +
+            hexify(cvToValue(result.value).namespace.value)
+        );
+      } else {
+        transferBnsName();
+      }
+    });
+  }
+
+  function hexify(s) {
+    let r = [];
+    for (let i = 0; i < s.length - 1; i += 2) {
+      r.push(String.fromCharCode(parseInt(s.charAt(i) + s.charAt(i + 1), 16)));
+    }
+    return r.join('');
+  }
+
+  function transferBnsName() {
     const bnsContractAddress = 'SP000000000000000000002Q6VF78';
     const bnsContractName = 'bns';
     const bnsNftName = 'names'; //BNS NFT name
@@ -135,7 +182,10 @@ const ContractCallBnsTransfer = () => {
             onChange={(e) => onChangeSetter(e.target.value)}
           />
           <p>
-            <button className="Connect" onClick={() => transferBnsName()}>
+            <button
+              className="Connect"
+              onClick={() => onClickAttemptTransfer()}
+            >
               Transfer Name
             </button>
           </p>
