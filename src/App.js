@@ -11,7 +11,10 @@ function App() {
         <ConnectWallet />
         <ContractCallBnsTransfer />
         <p>
-          <i>https://github.com/dartman10/bnstransfer-v2</i>
+          <i>
+            Get support at <a href="https://discord.gg/rr8SzQSwkx">Discord</a>{' '}
+            by dartman#1304
+          </i>
         </p>
       </header>
     </div>
