@@ -16,6 +16,12 @@ function App() {
             by dartman#1304
           </i>
         </p>
+        <p>
+          <i>
+            Easily search BNS names at{' '}
+            <a href="https://bnssearch.com">BNSsearch.com</a>
+          </i>
+        </p>
       </header>
     </div>
   );
