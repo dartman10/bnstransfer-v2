@@ -137,7 +137,7 @@ const ContractCallBnsTransfer = () => {
           .focus();
       },
       onCancel: () => {
-        setFriendlyMessage('Transfer cancelled.');
+        setFriendlyMessage('Transfer aborted.');
       },
     });
   }

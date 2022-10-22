@@ -19,7 +19,9 @@ function App() {
         <p>
           <i>
             Easily search BNS names at{' '}
-            <a href="https://bnssearch.com">BNSsearch.com</a>
+            <a className="App-link" href="https://www.bnssearch.com">
+              BNSsearch.com
+            </a>
           </i>
         </p>
       </header>
