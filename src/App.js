@@ -12,7 +12,10 @@ function App() {
         <ContractCallBnsTransfer />
         <p>
           <i>
-            Get support at <a href="https://discord.gg/rr8SzQSwkx">Discord</a>{' '}
+            Get support at{' '}
+            <a className="App-link" href="https://discord.gg/rr8SzQSwkx">
+              Discord
+            </a>{' '}
             by dartman#1304
           </i>
         </p>
